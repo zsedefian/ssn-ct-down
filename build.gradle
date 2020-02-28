@@ -1,0 +1,47 @@
+group 'nuvalence.example.'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+repositories {
+    mavenCentral()
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+dependencies {
+    implementation platform('software.amazon.awssdk:bom:2.5.29')
+    implementation 'com.amazonaws:aws-lambda-java-core:1.1.0'
+    implementation 'com.amazonaws:aws-lambda-java-events:2.2.7'
+//    implementation 'com.amazonaws:aws-java-sdk-docdb:1.11.729'
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.729'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.11.729'
+
+    testImplementation 'junit:junit:4.11'
+    testImplementation 'org.mockito:mockito-core:3.1.0'
+}
+
+task buildZip(type: Zip) {
+    from compileJava         // include the compiled source code
+    from processResources    // include any resources
+    into('lib') {            // in a lib folder at the root of the archive, include all runtime dependencies
+        from configurations.runtimeClasspath
+    }
+}
+assemble.dependsOn(buildZip)
