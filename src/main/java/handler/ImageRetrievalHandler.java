@@ -41,7 +41,8 @@ public class ImageRetrievalHandler
             Set<Image> images = imageRetrievalService.retrieveAllImages();
             return new APIGatewayProxyResponseEvent()
                     .withStatusCode(200)
-                    .withHeaders(Map.of("Content-Type", "application/json"))
+                    .withHeaders(Map.of("Content-Type", "application/json",
+                            "Access-Control-Allow-Origin", "*"))
                     .withBody(new ObjectMapper().writeValueAsString(images));
         } catch (JsonProcessingException e) {
             return new APIGatewayProxyResponseEvent()
