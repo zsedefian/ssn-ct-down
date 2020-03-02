@@ -1,24 +1,40 @@
 package models;
 
-public class RedactedImageMetadata {
-    private final String username;
-    private final String imageId;
-    private final String text;
-    private final String date;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
-    public RedactedImageMetadata(String username, String imageId, String text, String date) {
-        this.username = username;
-        this.imageId = imageId;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Map;
+
+public class RedactedImageMetadata {
+    private String phoneNumber;
+    private String objectKey;
+    private String text;
+    private String date;
+
+    public static RedactedImageMetadata fromDbEntity(Map<String, AttributeValue> attributeValueMap) {
+        return new RedactedImageMetadata(
+                attributeValueMap.get("phone-number").getS(),
+                attributeValueMap.get("objectKey").getS(),
+                attributeValueMap.get("text").getS(),
+                DateFormat.getDateTimeInstance()
+                        .format(new Date(Long.parseLong(attributeValueMap.get("date").getN())))
+        );
+    }
+
+    private RedactedImageMetadata(String phoneNumber, String objectKey, String text, String date) {
+        this.phoneNumber = phoneNumber;
+        this.objectKey = objectKey;
         this.text = text;
         this.date = date;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public String getImageId() {
-        return imageId;
+    public String getObjectKey() {
+        return objectKey;
     }
 
     public String getText() {

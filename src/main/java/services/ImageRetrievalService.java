@@ -30,6 +30,6 @@ public class ImageRetrievalService {
     }
 
     private Image createImage(RedactedImageMetadata imageMetadata) {
-        return Image.fromMetadata(s3Reader.retrieveImageUrl(imageMetadata.getImageId()), imageMetadata);
+        return Image.fromMetadata(s3Reader.retrieveImageUrl(imageMetadata.getObjectKey()), imageMetadata);
     }
 }
