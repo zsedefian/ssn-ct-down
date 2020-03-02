@@ -3,17 +3,15 @@ package repositories;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClientBuilder;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.BatchGetItemRequest;
-import com.amazonaws.services.dynamodbv2.model.KeysAndAttributes;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import models.RedactedImageMetadata;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.amazonaws.services.dynamodbv2.model.Select.ALL_ATTRIBUTES;
 
 public class DynamoReader {
 
@@ -30,20 +28,9 @@ public class DynamoReader {
     }
 
     public Set<RedactedImageMetadata> retrieveAllImageMetadata() {
-        return dynamoDB.batchGetItem(createBatchRequest())
-                .getResponses()
-                .values()
-                .stream()
-                .flatMap(item -> item.stream().map(this::createMetadataObject))
-                .collect(Collectors.toSet());
-    }
-
-    private BatchGetItemRequest createBatchRequest() {
-        Map.Entry<String, KeysAndAttributes> entry = Map.entry(
-                tableName, new KeysAndAttributes().withAttributesToGet(ALL_ATTRIBUTES.toString())
-        );
-        Map<String, KeysAndAttributes> requestItems = Map.ofEntries(entry);
-        return new BatchGetItemRequest(requestItems);
+        ScanResult scanResult = dynamoDB.scan(tableName, List.of("phone-number", "objectKey", "text", "date"));
+        System.out.println("Retrieved " + scanResult.getCount() + " items from DynamoDB.");
+        return scanResult.getItems().stream().map(this::createMetadataObject).collect(Collectors.toSet());
     }
 
     private RedactedImageMetadata createMetadataObject(Map<String, AttributeValue> attributeValueMap) {

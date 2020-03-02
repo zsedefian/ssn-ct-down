@@ -19,6 +19,6 @@ public class S3Reader {
     }
 
     public String retrieveImageUrl(String imageId) {
-        return s3Client.getObject(BUCKET_NAME, imageId).getKey();
+        return s3Client.getUrl(BUCKET_NAME, imageId).toString();
     }
 }
