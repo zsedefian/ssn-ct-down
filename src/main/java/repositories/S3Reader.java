@@ -3,7 +3,6 @@ package repositories;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.S3Object;
 
 public class S3Reader {
     private static final Regions REGION = Regions.US_EAST_2;
