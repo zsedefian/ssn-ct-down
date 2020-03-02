@@ -1,6 +1,7 @@
 package services;
 
 import models.Image;
+import models.RedactedImageMetadata;
 import repositories.DynamoReader;
 import repositories.S3Reader;
 
@@ -22,8 +23,13 @@ public class ImageRetrievalService {
     }
 
     public Set<Image> retrieveAllImages() {
-        return dynamoReader.retrieveAllImageMetadata().stream()
-                .map(imageMetadata -> new Image(s3Reader.retrieveImageUrl(imageMetadata.getImageId()), imageMetadata))
+        return dynamoReader.retrieveAllImageMetadata()
+                .stream()
+                .map(this::createImage)
                 .collect(Collectors.toSet());
+    }
+
+    private Image createImage(RedactedImageMetadata imageMetadata) {
+        return Image.fromMetadata(s3Reader.retrieveImageUrl(imageMetadata.getImageId()), imageMetadata);
     }
 }

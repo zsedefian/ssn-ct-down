@@ -6,11 +6,15 @@ public class Image {
     private final String date;
     private final String imageUrl;
 
-    public Image(String imageUrl, RedactedImageMetadata redactedImageMetadata) {
+    private Image(String imageUrl, RedactedImageMetadata redactedImageMetadata) {
         this.imageUrl = imageUrl;
         this.username = redactedImageMetadata.getUsername();
         this.text = redactedImageMetadata.getText();
         this.date = redactedImageMetadata.getDate();
+    }
+
+    public static Image fromMetadata(String imageUrl, RedactedImageMetadata redactedImageMetadata) {
+        return new Image(imageUrl, redactedImageMetadata);
     }
 
     public String getUsername() {
