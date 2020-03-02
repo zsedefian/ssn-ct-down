@@ -2,6 +2,9 @@ package models;
 
 import java.util.Objects;
 
+/**
+ * Models an uploaded image.
+ */
 public class Image {
     private final String phoneNumber;
     private final String text;

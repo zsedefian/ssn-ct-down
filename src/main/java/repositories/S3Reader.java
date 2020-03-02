@@ -4,6 +4,9 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
+/**
+ * Retrieves image URL from S3.
+ */
 public class S3Reader {
 
     private static final Regions REGION = Regions.US_EAST_2;
@@ -19,7 +22,13 @@ public class S3Reader {
         this.bucketName = bucketName;
     }
 
-    public String retrieveImageUrl(String imageId) {
-        return s3Client.getUrl(bucketName, imageId).toString();
+    /**
+     * Gets image URL given the image's ID (or, objectKey).
+     *
+     * @param objectKey Image ID
+     * @return URL for image
+     */
+    public String retrieveImageUrl(String objectKey) {
+        return s3Client.getUrl(bucketName, objectKey).toString();
     }
 }

@@ -8,6 +8,9 @@ import repositories.S3Reader;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Retrieves images from AWS storage.
+ */
 public class ImageRetrievalService {
 
     private final DynamoReader dynamoReader;
@@ -22,6 +25,12 @@ public class ImageRetrievalService {
         this.s3Reader = s3Reader;
     }
 
+    /**
+     * Retrieves all meta data from DynamoDB, then uses the retrieved object key to look up the URL of the image itself
+     * in an S3 bucket.
+     *
+     * @return Set of all {@link Image} objects that are contained in the given S3 bucket
+     */
     public Set<Image> retrieveAllImages() {
         return dynamoReader.retrieveAllImageMetadata()
                 .stream()

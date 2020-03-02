@@ -12,6 +12,9 @@ import services.ImageRetrievalService;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Retrieves all uploaded images.
+ */
 public class ImageRetrievalHandler
         implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -25,6 +28,13 @@ public class ImageRetrievalHandler
         this.imageRetrievalService = imageRetrievalService;
     }
 
+    /**
+     * Retrieves all uploaded images by checking for metadata in DynamoDB and then getting the image URL from S3.
+     *
+     * @param input Request with empty body.
+     * @param context Context.
+     * @return String formatted in JSON containing image URL and its OCR'd text.
+     */
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
         try {

@@ -6,6 +6,9 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * Partially models DynamoDB {@code ssn-ct-table} row.
+ */
 public class RedactedImageMetadata {
     private String phoneNumber;
     private String objectKey;

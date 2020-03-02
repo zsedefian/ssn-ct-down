@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Reads from DynamoDB.
+ */
 public class DynamoReader {
 
     private static final List<String> ATTRIBUTES = List.of("phone-number", "objectKey", "text", "date");
@@ -23,6 +26,12 @@ public class DynamoReader {
         this.tableName = tableName;
     }
 
+    /**
+     * Gets several attributes from each row found in the {@link this#tableName} table and maps it to a
+     * {@link RedactedImageMetadata} object.
+     *
+     * @return Set of all {@link RedactedImageMetadata} objects found in DynamoDB table.
+     */
     public Set<RedactedImageMetadata> retrieveAllImageMetadata() {
         return dynamoDB.scan(tableName, ATTRIBUTES)
                 .getItems()
